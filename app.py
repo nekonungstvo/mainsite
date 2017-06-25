@@ -1,0 +1,44 @@
+from flask import Flask, render_template
+from flask_login import LoginManager
+from flaskext.markdown import Markdown
+from pony.orm import db_session
+
+from blueprints.authorization import authorization_blueprint
+from blueprints.character import character_blueprint
+from blueprints.custom_page import custom_pages_blueprint
+from blueprints.profile import profile_blueprint
+from database import User
+from forms import LoginForm
+
+app = Flask(__name__)
+app.secret_key = 'super secret string'
+app.login_manager = LoginManager()
+app.login_manager.init_app(app)
+app.markdown = Markdown(app)
+
+app.register_blueprint(character_blueprint, url_prefix="/character")
+app.register_blueprint(profile_blueprint, url_prefix="/profile")
+app.register_blueprint(custom_pages_blueprint, url_prefix="/custom_pages")
+app.register_blueprint(authorization_blueprint, url_prefix="/auth")
+
+
+@app.context_processor
+def inject_login_form():
+    return dict(login_form=LoginForm())
+
+
+@app.login_manager.user_loader
+@db_session
+def load_user(user_id):
+    return User.select(
+        lambda user: user.id == user_id
+    ).first()
+
+
+@app.route('/')
+def index_page():
+    return render_template('index.jinja2')
+
+
+if __name__ == '__main__':
+    app.run()

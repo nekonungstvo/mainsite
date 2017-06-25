@@ -1,0 +1,31 @@
+{% extends "base.jinja2" %}
+
+{% block content %}
+    <h3>Профиль {{ user.username }}</h3>
+    <p>
+        {% if user.about_text.strip() %}
+            {{ user.about_text | markdown }}
+        {% else %}
+            Игрок не заполнил «о себе».
+        {% endif %}
+    </p>
+
+    <h3>Персонажи {{ user.username }}</h3>
+    {% if current_user == user %}
+        {% if characters %}
+            <ul>
+                {% for character in characters %}
+                    <li>
+                        <a href="{{ url_for('character.character_page', login=character.login) }}">
+                            {{ character.login }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            У этого игрока нет ни одного персонажа.
+        {% endif %}
+    {% else %}
+        <p class="nb">На просмотр списка персонажей у вас нет прав.</p>
+    {% endif %}
+{% endblock %}

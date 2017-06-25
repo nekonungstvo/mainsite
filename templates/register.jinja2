@@ -1,0 +1,88 @@
+{% extends "base.jinja2" %}
+
+{% block content %}
+    <h2>Регистрация</h2>
+    <div id="regr">
+        <p>Продолжая регистрацию, вы подтверждаете, что:</p>
+        <ul>
+            <li>Вам 16 или более лет;</li>
+            <li>Вы не будете размещать на сайте <em>спам</em>;</li>
+            <li>Вы не будете размещать на сайте информацию, нарушающую законы Российской Федерации, либо ссылки на такую
+                информацию;
+            </li>
+            <li>Вы соглашаетесь с тем, что администрация не несёт никакой ответственности за действия пользователей и
+                любые последствия пользования сайтом.
+            </li>
+        </ul>
+        <p>Также вы соглашаетесь использовать читаемый логин. Он не должен состоять из бессмысленного набора букв, быть
+            транслитерацией или «псевдотранслитом», содержать нецензурныe слова или оскорбления (включая
+            завуалированные). Помимо этого запрещается использовать логин, намеренно похожий на логин одного из
+            администраторов, или игроков. Аккаунты, нарушающие эти условия, могут быть удалены или заблокированы.</p>
+        <p>Если вы не согласны с каким-либо из этих условий, не продолжайте регистрацию и покиньте сайт.</p>
+    </div>
+
+    {% if errors %}
+        <ul>
+            {% for message in errors %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <form method="POST" class="registration">
+        <ul>
+            <li>
+                {{ form.username.label }}
+                <input
+                        type="text"
+                        size="10"
+                        maxlength="20"
+                        name="{{ form.username.name }}"
+                        placeholder="Англ. буквы, цифры, дефис, _ до 16 символов"
+                        pattern="[A-Za-z0-9_\-]{2,16}"
+                        required
+                />
+            </li>
+            <li>
+                {{ form.password.label }}
+                <input
+                        type="password"
+                        size="10"
+                        maxlength="255"
+                        id="{{ form.password.name }}"
+                        name="{{ form.password.name }}"
+                        placeholder="Не забывайте его"
+                        required
+                />
+            </li>
+            <li>
+                {{ form.password_confirm.label }}
+                <input
+                        type="password"
+                        size="10"
+                        maxlength="255"
+                        id="{{ form.password_confirm.name }}"
+                        name="{{ form.password_confirm.name }}"
+                        placeholder="Пароли должны совпадать"
+                        required
+                />
+            </li>
+            <li>
+                <label for="{{ form.captcha_answer.name }}"></label>
+                <input
+                        type="text"
+                        size="10"
+                        maxlength="20"
+                        id="{{ form.captcha_answer.name }}"
+                        name="{{ form.captcha_answer.name }}"
+                        placeholder="Ответ на простой вопрос капчи"
+                        required
+                />
+            </li>
+            <li>
+                <label for="save">Готово:</label>
+                <input type="submit" id="save" name="save" value="Зарегистрироваться">
+            </li>
+        </ul>
+    </form>
+{% endblock %}
