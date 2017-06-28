@@ -1,13 +1,13 @@
 from flask import Flask, render_template
 from flask_login import LoginManager
 from flaskext.markdown import Markdown
-from pony.orm import db_session
+from pony.orm import db_session, desc
 
 from blueprints.authorization import authorization_blueprint
 from blueprints.character import character_blueprint
 from blueprints.custom_page import custom_pages_blueprint
 from blueprints.profile import profile_blueprint
-from database import User
+from database import User, News
 from forms import LoginForm
 
 app = Flask(__name__)
@@ -36,8 +36,16 @@ def load_user(user_id):
 
 
 @app.route('/')
+@db_session
 def index_page():
-    return render_template('index.jinja2')
+    last_news = News.select().order_by(
+        lambda news: desc(news.timestamp)
+    ).first()
+
+    return render_template(
+        'index.jinja2',
+        last_news=last_news
+    )
 
 
 if __name__ == '__main__':

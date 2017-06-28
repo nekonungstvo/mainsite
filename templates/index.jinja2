@@ -1,3 +1,61 @@
 {% extends "base.jinja2" %}
 
-{% block content %}{% endblock %}
+{% block title %}KMRP - Minecraft RP server{% endblock %}
+{% from 'macros.jinja2' import spoiler %}
+{% block content %}
+    <section id="maininfo">
+        <p><strong>КМРП</strong> — сообщество людей
+            по интересам (в основном это ролевые игры и всё с этим
+            связанное, а также Майнкрафт).</p>
+        <p>
+            В данный момент сервер закрыт, квенты не принимаются. Разрабатывается новый сеттинг, все новости в дискорде.
+        </p>
+
+        <p>Также иногда проводятся
+            <abbr title="Instant Roleplay Action">IRA</abbr>, в которых
+            участвуют все желающие. Это небольшие, но полноценные ролевые сценарии
+            с интересными сюжетами, но не требующие (от игроков) долгой подготовки (написания
+            квент, чтения большого количества информации и т. д). Это стопроцентные
+            ролевые игры, в которых майнкрафт используется лишь как площадка. Можно
+            сравнить их с партиями, например,
+            в <abbr title="Dungeons & Dragons">D&amp;D</abbr>, только для удобства,
+            наглядности и большего погружения в атмосферу используется Майнкрафт.
+        </p>
+        {{ spoiler(
+        title="Основным способом связи является discord-конференция",
+        content='<p>Её адрес: <a href="https://discord.gg/c8McvrS">https://discord.gg/c8McvrS</a></p>'
+        ) }}
+    </section>
+    <div id="important">
+        <div id="lastnew">
+            <span class="cal">
+                <span class="wd">пятница</span>
+                23
+                <span class="m">ИЮНЯ</span>
+            </span>
+
+
+            <section>
+                <h2>{{ last_news.title }}</h2>
+
+                <p class="fp">{{ last_news.content | markdown }}</p>
+                <p class="datetime">23 июня 2017 г. 17:35 МСК</p>
+
+            </section>
+            <a href="/all/news" id="narchive">АРХИВ НОВОСТЕЙ</a>
+        </div>
+        <div id="sb">
+            <a id="dlClient" href="/static/KMRPLauncher.jar">Скачать клиент</a>
+            <h2>Стоит почитать</h2>
+            <ul>
+                <li><a href="{{ url_for("custom_pages.custom_page", identifier="rules") }}">Правила</a></li>
+                <li><a href="{{ url_for("custom_pages.custom_page", identifier="setting") }}">Система</a></li>
+                <li><a href="{{ url_for("custom_pages.custom_page", identifier="chat") }}">Особенности чата</a></li>
+                <li><a href="{{ url_for("custom_pages.custom_page", identifier="setting") }}">Сеттинг активного
+                    сервера</a></li>
+                <li><a href="{{ url_for("custom_pages.custom_page", identifier="donate") }}">Как помочь проекту</a></li>
+            </ul>
+        </div>
+    </div>
+
+{% endblock %}

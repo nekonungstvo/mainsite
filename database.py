@@ -11,9 +11,8 @@ sql_debug(False)
 
 class News(db.Entity):
     title = Required(str)
-    text = Required(str)
-
-    created_at = Required(datetime.datetime, default=datetime.datetime.now)
+    content = Required(str)
+    timestamp = Required(datetime.datetime, default=datetime.datetime.now)
 
 
 class User(db.Entity, UserMixin):

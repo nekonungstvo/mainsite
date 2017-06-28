@@ -1,0 +1,15 @@
+{% macro spoiler(title, content) -%}
+    <div class="slr" style="margin: 1em">
+        <input type="checkbox" tabindex="-1">
+        <div class="box"><span class="close">
+            [-] {{ title }}
+        </span>
+            <span class="open">
+                [+] {{ title }}
+            </span>
+            <blockquote>
+                {{ content }}
+            </blockquote>
+        </div>
+    </div>
+{%- endmacro %}
