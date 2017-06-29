@@ -587,9 +587,6 @@ form.registration label {
     display: inline-block;
 }
 
-/* registration}}} */
-
-/* {{{editprofile */
 form.editprofile table {
     width: 100%;
 }
@@ -607,7 +604,7 @@ form.editprofile input {
     border-color: #666;
 }
 
-form.editprofile input#profileName {
+form.editprofile input[type="text"] {
     width: 90%;
 }
 

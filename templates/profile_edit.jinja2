@@ -1,0 +1,20 @@
+{% extends "base.jinja2" %}
+
+{% block content %}
+    <h3>Изменение информации о {{ user.username }}</h3>
+
+    <p class="smallnote">
+        Это поле заполняется в свободной форме и является личным полем пользователя
+        (а не персонажа), оно может содержать любую информацию, но не должено содержать
+        рекламы, спам-ссылок на другие сайты,
+        или оскорблений администрации и других игроков.
+    </p>
+
+    <form class="editprofile" method="POST">
+        {% for field in form %}
+            {{ field.label }} <br/>
+            {{ field }}
+        {% endfor %}
+        <input type="submit" name="submit" value="Применить"/>
+    </form>
+{% endblock %}

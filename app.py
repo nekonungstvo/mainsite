@@ -8,18 +8,20 @@ from blueprints.character import character_blueprint
 from blueprints.custom_page import custom_pages_blueprint
 from blueprints.profile import profile_blueprint
 from database import User, News
-from forms import LoginForm
+from model.forms import LoginForm
 
 app = Flask(__name__)
 app.secret_key = 'super secret string'
 app.login_manager = LoginManager()
 app.login_manager.init_app(app)
-app.markdown = Markdown(app)
+app.markdown = Markdown(
+    app
+)
 
-app.register_blueprint(character_blueprint, url_prefix="/character")
-app.register_blueprint(profile_blueprint, url_prefix="/profile")
-app.register_blueprint(custom_pages_blueprint, url_prefix="/custom_pages")
-app.register_blueprint(authorization_blueprint, url_prefix="/auth")
+app.register_blueprint(profile_blueprint)
+app.register_blueprint(character_blueprint)
+app.register_blueprint(custom_pages_blueprint)
+app.register_blueprint(authorization_blueprint)
 
 
 @app.context_processor

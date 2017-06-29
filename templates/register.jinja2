@@ -31,54 +31,12 @@
 
     <form method="POST" class="registration">
         <ul>
-            <li>
-                {{ form.username.label }}
-                <input
-                        type="text"
-                        size="10"
-                        maxlength="20"
-                        name="{{ form.username.name }}"
-                        placeholder="Англ. буквы, цифры, дефис, _ до 16 символов"
-                        pattern="[A-Za-z0-9_\-]{2,16}"
-                        required
-                />
-            </li>
-            <li>
-                {{ form.password.label }}
-                <input
-                        type="password"
-                        size="10"
-                        maxlength="255"
-                        id="{{ form.password.name }}"
-                        name="{{ form.password.name }}"
-                        placeholder="Не забывайте его"
-                        required
-                />
-            </li>
-            <li>
-                {{ form.password_confirm.label }}
-                <input
-                        type="password"
-                        size="10"
-                        maxlength="255"
-                        id="{{ form.password_confirm.name }}"
-                        name="{{ form.password_confirm.name }}"
-                        placeholder="Пароли должны совпадать"
-                        required
-                />
-            </li>
-            <li>
-                <label for="{{ form.captcha_answer.name }}"></label>
-                <input
-                        type="text"
-                        size="10"
-                        maxlength="20"
-                        id="{{ form.captcha_answer.name }}"
-                        name="{{ form.captcha_answer.name }}"
-                        placeholder="Ответ на простой вопрос капчи"
-                        required
-                />
-            </li>
+            {% for field in form %}
+                <li>
+                    {{ field.label }}
+                    {{ field }}
+                </li>
+            {% endfor %}
             <li>
                 <label for="save">Готово:</label>
                 <input type="submit" id="save" name="save" value="Зарегистрироваться">

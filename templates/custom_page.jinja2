@@ -5,5 +5,5 @@
 {% endblock %}
 
 {% block content %}
-    {{ custom_page.content | markdown }}
+    {{ custom_page.content | escape | markdown }}
 {% endblock %}

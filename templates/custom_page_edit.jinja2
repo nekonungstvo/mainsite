@@ -1,0 +1,19 @@
+{% extends "base.jinja2" %}
+
+{% block title %}Редактиврование страницы ({{ custom_page.indetifier }}){% endblock %}
+
+{% block content %}
+    <form class="editprofile" method="POST">
+        {% for field in form %}
+            <p>
+                {{ field.label }} <br/>
+                {{ field }}
+            </p>
+        {% endfor %}
+        <input type="submit" name="preview" value="Превью"/>
+        <input type="submit" name="submit" value="Применить"/>
+        <input type="submit" name="delete" value="Удалить"/>
+    </form>
+    <h2>Превью:</h2>
+    {{ form.content.data | escape | markdown }}
+{% endblock %}

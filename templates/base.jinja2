@@ -23,20 +23,9 @@
             <a href="{{ url_for("authorization.logout_action") }}" class="exit">выйти</a>
         {% else %}
             <form id="login" action="{{ url_for("authorization.login_action") }}" method="POST">
-                <input
-                        type="text"
-                        maxlength="20"
-                        name="{{ login_form.username.name }}"
-                        placeholder="login"
-                        required
-                />
-                <input
-                        type="password"
-                        maxlength="255"
-                        name="{{ login_form.password.name }}"
-                        placeholder="password"
-                        required
-                />
+                {{ login_form.username }}
+                {{ login_form.password }}
+
                 <input type="submit" name="save" value="войти"/>
                 <a href="{{ url_for("authorization.registration_page") }}">регистрация</a>
             </form>

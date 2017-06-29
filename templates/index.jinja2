@@ -38,7 +38,7 @@
             <section>
                 <h2>{{ last_news.title }}</h2>
 
-                <p class="fp">{{ last_news.content | markdown }}</p>
+                <p class="fp">{{ last_news.content | escape | markdown }}</p>
                 <p class="datetime">23 июня 2017 г. 17:35 МСК</p>
 
             </section>

@@ -46,7 +46,7 @@ class CharacterStatus(db.Entity):
     characters = Set(lambda: Character)
 
 
-class CustomPages(db.Entity):
+class CustomPage(db.Entity):
     identifier = Required(str, unique=True)
     title = Optional(str)
     content = Optional(str)

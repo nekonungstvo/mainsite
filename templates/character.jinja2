@@ -8,13 +8,13 @@
         </a>
     </p>
     <h4>Внешность {{ character.login }}</h4>
-    {{ character.appearance | markdown }}
+    {{ character.appearance | escape | markdown }}
 
     <h4>Квента {{ character.login }}</h4>
     {% if True %}
         <p>
             <strong>{{ character.name }}</strong>
-            {{ character.story | markdown }}
+            {{ character.story | escape | markdown }}
         </p>
     {% else %}
 

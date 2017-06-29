@@ -1,13 +1,18 @@
 import hashlib
 
-from flask import Blueprint, redirect, url_for, abort, request, render_template
+from flask import Blueprint, redirect, url_for, request, render_template
 from flask_login import logout_user, login_user
-from pony.orm import db_session, exists
+from pony.orm import db_session
 
-from database import User
-from forms import LoginForm, RegistrationForm
+from model import user as user_model
+from model.forms import LoginForm, RegistrationForm
 
-authorization_blueprint = Blueprint('authorization', __name__, template_folder='templates')
+authorization_blueprint = Blueprint(
+    'authorization',
+    __name__,
+    template_folder='templates',
+    url_prefix="/auth"
+)
 
 
 def hash_password(password):
@@ -23,16 +28,12 @@ def registration_page():
     username = form.username.data
     password = form.password.data
 
-    unique = not exists(
-        user for user in User
-        if user.username == username
-    )
+    unique = not user_model.check_user_exists(username)
 
     if request.method == 'POST' and form.validate() and unique:
-        user = User(
+        user_model.create_user(
             username=username,
-            password_hash=hash_password(password),
-            about_text=""
+            password_hash=hash_password(password)
         )
 
         return redirect(url_for('index_page'))
@@ -62,12 +63,7 @@ def login_action():
     username = form.username.data
     password = form.password.data
 
-    user = User.select(
-        lambda db_user: db_user.username == username
-    ).first()
-
-    if not user:
-        return abort(404)
+    user = user_model.get_user(username)
 
     if user.password_hash == hash_password(password):
         login_user(user)
