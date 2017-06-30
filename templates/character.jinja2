@@ -1,22 +1,36 @@
 {% extends "base.jinja2" %}
 
 {% block content %}
-    <h3>Профиль {{ character.login }}</h3>
-    <p>Хозяин:
-        <a href="{{ url_for('profile.profile_page', username=character.user.username) }}">
-            {{ character.user.username }}
-        </a>
-    </p>
+    <h3>
+        Профиль {{ character.login }}
+        {% if can_edit_characters(current_user, character.user) %}
+            <sup>
+                <a href="{{ url_for('character.character_edit_page', login=character.login) }}">
+                    edit
+                </a>
+            </sup>
+        {% endif %}
+    </h3>
+    {% if can_see_characters(current_user, character.user) %}
+        <p>Хозяин:
+            <a href="{{ url_for('profile.profile_page', username=character.user.username) }}">
+                {{ character.user.username }}
+            </a>
+        </p>
+    {% endif %}
     <h4>Внешность {{ character.login }}</h4>
-    {{ character.appearance | escape | markdown }}
-
+    {% if character.appearance.strip() %}
+        {{ character.appearance | escape | markdown }}
+    {% else %}
+        <p class="nb">Игрок не указал внешность персонажа.</p>
+    {% endif %}
     <h4>Квента {{ character.login }}</h4>
-    {% if True %}
+    {% if can_see_characters(current_user, character.user) %}
         <p>
             <strong>{{ character.name }}</strong>
             {{ character.story | escape | markdown }}
         </p>
     {% else %}
-
+        <p class="nb">На просмотр квенты у вас нет прав.</p>
     {% endif %}
 {% endblock %}

@@ -1,8 +1,14 @@
-from flask import Blueprint, render_template, abort, request, redirect, url_for
+from typing import Union
+
+from flask import Blueprint, render_template, request, redirect, url_for
+from flask_login import current_user
 from pony.orm import db_session
 
-from database import Character
+from database import Character, User
 from model import character as character_model
+from model import user as user_model
+from model.authorization import AuthorizationException
+from model.character import can_edit_characters, can_see_characters
 from model.forms import CharacterForm
 
 character_blueprint = Blueprint(
@@ -16,12 +22,7 @@ character_blueprint = Blueprint(
 @character_blueprint.route('/<login>')
 @db_session
 def character_page(login):
-    character = Character.select(
-        lambda db_character: db_character.login == login
-    ).first()
-
-    if not character:
-        return abort(404)
+    character = character_model.get_character(login)
 
     return render_template(
         'character.jinja2',
@@ -29,24 +30,61 @@ def character_page(login):
     )
 
 
-@character_blueprint.route('/new', methods=["GET", "POST"])
-@character_blueprint.route('/<login>/edit', methods=["GET", "POST"])
-@db_session
-def character_edit_page(login=""):
-    character = None
-    if login:
-        character = character_model.get_character(login)
-
+def create_edit_character_page(character: Union[None, Character], user: User) -> str:
     form = CharacterForm(request.form, character)
 
-    if request.form and form.validate():
-        form.populate_obj(character)
-        return redirect(url_for(
-            "character.character_page",
-            login=form.login.data
-        ))
+    if not can_edit_characters(current_user, user):
+        raise AuthorizationException("Can't create or edit this character")
+
+    if request.form:
+        if request.form.get("submit") and form.validate():
+            if not character:
+                character = character_model.create_character(form.login.data, user)
+
+            form.populate_obj(character)
+
+            return redirect(url_for(
+                "character.character_page",
+                login=form.login.data
+            ))
+        elif request.form.get("delete"):
+            if character:
+                character_model.delete_character(character)
+
+            return redirect(url_for(
+                "profile.profile_page",
+                username=user.username
+            ))
 
     return render_template(
         'character_edit.jinja2',
-        form=form
+        form=form,
+        create=False if character else True
+    )
+
+
+@character_blueprint.route('/<username>/new', methods=["GET", "POST"])
+@db_session
+def character_create_page(username):
+    return create_edit_character_page(
+        character=None,
+        user=user_model.get_user(username)
+    )
+
+
+@character_blueprint.route('/<login>/edit', methods=["GET", "POST"])
+@db_session
+def character_edit_page(login=None, action="edit", username=None):
+    character = character_model.get_character(login)
+    return create_edit_character_page(
+        character=character,
+        user=character.user
+    )
+
+
+@character_blueprint.context_processor
+def inject_auth_functions():
+    return dict(
+        can_edit_characters=can_edit_characters,
+        can_see_characters=can_see_characters
     )

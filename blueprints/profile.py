@@ -3,7 +3,10 @@ from flask_login import current_user
 from pony.orm import db_session, desc
 
 from model import user as user_model
+from model.authorization import AuthorizationException
+from model.character import can_edit_characters, can_see_characters
 from model.forms import AboutForm
+from model.user import can_edit_profile
 
 profile_blueprint = Blueprint(
     'profile',
@@ -32,8 +35,8 @@ def profile_edit_page(username):
     user = user_model.get_user(username)
     form = AboutForm(request.form, obj=user)
 
-    if user != current_user:
-        raise Exception("YOU ARE NOT ALLOWED TO CHANGE INFO")
+    if not can_edit_profile(current_user, user):
+        raise AuthorizationException("YOU ARE NOT ALLOWED TO CHANGE USER INFO")
 
     if request.form and form.validate():
         form.populate_obj(user)
@@ -48,4 +51,13 @@ def profile_edit_page(username):
         'profile_edit.jinja2',
         user=user,
         form=form
+    )
+
+
+@profile_blueprint.context_processor
+def inject_auth_functions():
+    return dict(
+        can_edit_profile=can_edit_profile,
+        can_edit_characters=can_edit_characters,
+        can_see_characters=can_see_characters
     )

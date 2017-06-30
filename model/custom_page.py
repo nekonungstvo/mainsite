@@ -1,4 +1,13 @@
-from database import CustomPage
+from database import CustomPage, User
+from model.authorization import has_permission
+
+
+class CustomPageNotFound(Exception):
+    status_code = 404
+
+    def __init__(self, identifier):
+        super().__init__()
+        self.identifier = identifier
 
 
 def get_custom_page_generator(identifier: str):
@@ -11,10 +20,18 @@ def get_custom_page(identifier: str) -> CustomPage:
     ).first()
 
     if not cpage:
-        raise Exception("USER NOT FOUND")
+        raise CustomPageNotFound(identifier)
 
     return cpage
 
 
+def create_custom_page(identifier: str):
+    return CustomPage(identifier=identifier)
+
+
 def delete_custom_page(identifier: str):
     get_custom_page(identifier).delete()
+
+
+def can_edit_custom_page(user: User):
+    return has_permission(user, "edit_custom_pages")

@@ -1,4 +1,5 @@
 from database import User
+from model.authorization import Role, has_permission
 
 
 def get_user_get_generator(username):
@@ -26,5 +27,10 @@ def create_user(username: str, password_hash: str):
     return User(
         username=username,
         password_hash=password_hash,
-        about_text=""
+        about_text="",
+        role=Role.USER
     )
+
+
+def can_edit_profile(user, owener):
+    return has_permission(user, "edit_profiles") or user == owener

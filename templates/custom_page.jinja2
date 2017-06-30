@@ -5,5 +5,13 @@
 {% endblock %}
 
 {% block content %}
+    {% if can_edit_custom_page(current_user) %}
+        <p>
+            Вы можете <a href="{{ url_for(
+            "custom_pages.custom_page_edit",
+            identifier=custom_page.identifier
+            ) }}">редактировать</a> эту страницу.
+        </p>
+    {% endif %}
     {{ custom_page.content | escape | markdown }}
 {% endblock %}

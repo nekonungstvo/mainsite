@@ -26,7 +26,9 @@ app.register_blueprint(authorization_blueprint)
 
 @app.context_processor
 def inject_login_form():
-    return dict(login_form=LoginForm())
+    return dict(
+        login_form=LoginForm(),
+    )
 
 
 @app.login_manager.user_loader

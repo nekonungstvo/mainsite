@@ -18,8 +18,8 @@ class News(db.Entity):
 class User(db.Entity, UserMixin):
     username = Required(str, unique=True)
     password_hash = Required(str)
-
     about_text = Optional(str)
+    role = Required(int)
 
     characters = Set(lambda: Character)
     ips = Set(lambda: Ip)

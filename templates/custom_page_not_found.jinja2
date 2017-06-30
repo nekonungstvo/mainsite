@@ -1,0 +1,17 @@
+{% extends "base.jinja2" %}
+
+{% block title %}Страница "{{ identifier }}" не найдена!{% endblock %}
+
+{% block content %}
+    <h2>Страница "{{ identifier }}" не найдена!</h2>
+    <p>
+        {% if can_edit_custom_page(current_user) %}
+            Вы можете <a href="{{ url_for(
+            "custom_pages.custom_page_edit",
+            identifier=identifier
+            ) }}">создать</a> её.
+        {% else %}
+            Возможно, она была удалена администратором, либо вы ввели неверный url.
+        {% endif %}
+    </p>
+{% endblock %}

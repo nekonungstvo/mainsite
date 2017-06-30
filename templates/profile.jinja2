@@ -3,7 +3,7 @@
 {% block content %}
     <h3>
         Профиль {{ user.username }}
-        {% if current_user == user %}
+        {% if can_edit_profile(current_user, user) %}
             <sup>
                 <a href="{{ url_for('profile.profile_edit_page', username=user.username) }}">
                     edit
@@ -22,19 +22,23 @@
     <h3>
         Персонажи {{ user.username }}
     </h3>
-    {% if current_user == user %}
-        {% if characters %}
-            <ul>
-                {% for character in characters %}
-                    <li>
-                        {{ character.name }}
-                        (<a href="{{ url_for('character.character_page', login=character.login) }}">{{ character.login }}</a>)
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
+    {% if can_see_characters(current_user, user) %}
+        {% if not characters %}
             <p class="nb"> У этого игрока нет ни одного персонажа. </p>
         {% endif %}
+        <ul>
+            {% for character in characters %}
+                <li>
+                    {{ character.name }}
+                    (<a href="{{ url_for('character.character_page', login=character.login) }}">{{ character.login }}</a>)
+                </li>
+            {% endfor %}
+            {% if can_edit_characters(current_user, user) %}
+                <li><a href="{{ url_for("character.character_create_page", username=user.username) }}">Создать
+                    нового</a></li>
+            {% endif %}
+        </ul>
+
     {% else %}
         <p class="nb">На просмотр списка персонажей у вас нет прав.</p>
     {% endif %}
