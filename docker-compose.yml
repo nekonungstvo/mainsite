@@ -1,4 +1,15 @@
+server:
+  restart: always
+  image: nginx
+  links:
+    - mainsite
+  volumes:
+    - ./nginx_config:/etc/nginx/conf.d
+  ports:
+    - "80:80"
+
 mainsite:
   build: .
-  ports:
-   - "5000:5000"
+  expose:
+    - "8000"
+  command: gunicorn -w 4 -b :8000 app:app
