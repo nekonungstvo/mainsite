@@ -2,7 +2,6 @@ from flask import Flask, render_template
 from flask_login import LoginManager
 from flaskext.markdown import Markdown
 from pony.orm import db_session, desc
-from werkzeug.contrib.fixers import ProxyFix
 
 from blueprints.authorization import authorization_blueprint
 from blueprints.character import character_blueprint
@@ -52,7 +51,5 @@ def index_page():
         last_news=last_news
     )
 
-
-app.wsgi_app = ProxyFix(app.wsgi_app)
 if __name__ == '__main__':
     app.run()
