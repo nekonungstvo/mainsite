@@ -5,4 +5,5 @@ EXPOSE 5000
 ADD . /mainsite
 WORKDIR mainsite
 RUN pip3 install -r requirements.txt
-CMD python3 app.py
+ENTRYPOINT 	["python3"]
+CMD ["app.py"]
