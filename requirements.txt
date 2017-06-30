@@ -1,0 +1,5 @@
+Flask==0.12.2
+Flask-Login==0.4.0
+Flask-Markdown==0.3
+pony==0.7.1
+WTForms==2.1
