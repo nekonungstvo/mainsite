@@ -3,7 +3,7 @@ from flask_login import logout_user, login_user
 from pony.orm import db_session
 
 from model import user as user_model
-from model.authorization import AuthorizationException, hash_password, check_password
+from model.authorization import AuthorizationException, check_password
 from model.forms.definitions import LoginForm, RegistrationForm
 from model.user import UserNotFound
 
@@ -27,7 +27,7 @@ def registration_page():
     if request.method == 'POST' and form.validate():
         user_model.create_user(
             username=username,
-            password_hash=hash_password(password)
+            password=password
         )
 
         return redirect(url_for('index_page'))

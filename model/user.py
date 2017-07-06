@@ -1,5 +1,5 @@
 from database import User
-from model.authorization import Role, has_permission
+from model.authorization import Role, has_permission, hash_password
 
 
 class UserNotFound(Exception):
@@ -19,10 +19,10 @@ def get_user(username: str) -> User:
     return user
 
 
-def create_user(username: str, password_hash: str):
+def create_user(username: str, password: str):
     return User(
         username=username,
-        password_hash=password_hash,
+        password_hash=hash_password(password),
         about_text="",
         role=Role.USER
     )
