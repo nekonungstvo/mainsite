@@ -1,3 +1,4 @@
+import hashlib
 from random import choice
 
 from database import User
@@ -9,6 +10,14 @@ class AuthorizationException(Exception):
     def __init__(self, message):
         super().__init__(message)
         self.message = message
+
+
+def hash_password(password):
+    return hashlib.sha512(password.encode()).hexdigest()
+
+
+def check_password(user: User, password):
+    return user.password_hash == hash_password(password)
 
 
 class Role:

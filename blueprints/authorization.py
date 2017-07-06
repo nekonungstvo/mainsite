@@ -1,11 +1,9 @@
-import hashlib
-
 from flask import Blueprint, redirect, url_for, request, render_template
 from flask_login import logout_user, login_user
 from pony.orm import db_session
 
 from model import user as user_model
-from model.authorization import AuthorizationException
+from model.authorization import AuthorizationException, hash_password, check_password
 from model.forms.definitions import LoginForm, RegistrationForm
 from model.user import UserNotFound
 
@@ -15,10 +13,6 @@ authorization_blueprint = Blueprint(
     template_folder='templates',
     url_prefix="/auth"
 )
-
-
-def hash_password(password):
-    return hashlib.sha512(password.encode()).hexdigest()
 
 
 @authorization_blueprint.route('/register', methods=["GET", "POST"])
@@ -54,7 +48,7 @@ def login_action():
 
     user = user_model.get_user(username)
 
-    if user.password_hash != hash_password(password):
+    if not check_password(user, password):
         raise AuthorizationException("Неверный пароль")
 
     login_user(user)
