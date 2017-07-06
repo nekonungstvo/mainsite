@@ -11,22 +11,20 @@ from blueprints.registration import registration_blueprint
 from database import User, News
 from model.forms.definitions import LoginForm
 
-app = Flask(
-    __name__,
-
-)
+app = Flask(__name__)
 app.secret_key = 'super secret string'
+
+# Init plugins
 app.login_manager = LoginManager()
 app.login_manager.init_app(app)
-app.markdown = Markdown(
-    app
-)
+app.markdown = Markdown(app)
 
+# Register site modules
+app.register_blueprint(custom_pages_blueprint)
 app.register_blueprint(registration_blueprint)
+app.register_blueprint(authorization_blueprint)
 app.register_blueprint(profile_blueprint)
 app.register_blueprint(character_blueprint)
-app.register_blueprint(custom_pages_blueprint)
-app.register_blueprint(authorization_blueprint)
 
 
 @app.context_processor
