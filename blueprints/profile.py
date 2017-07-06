@@ -6,7 +6,7 @@ from model import user as user_model
 from model.authorization import AuthorizationException
 from model.character import can_edit_characters, can_see_characters
 from model.forms import AboutForm
-from model.user import can_edit_profile
+from model.user import can_edit_profile, UserNotFound
 
 profile_blueprint = Blueprint(
     'profile',
@@ -36,7 +36,7 @@ def profile_edit_page(username):
     form = AboutForm(request.form, obj=user)
 
     if not can_edit_profile(current_user, user):
-        raise AuthorizationException("YOU ARE NOT ALLOWED TO CHANGE USER INFO")
+        raise AuthorizationException("Вы не можете редактировать этого пользователя.")
 
     if request.form and form.validate():
         form.populate_obj(user)
@@ -52,6 +52,17 @@ def profile_edit_page(username):
         user=user,
         form=form
     )
+
+
+@profile_blueprint.errorhandler(UserNotFound)
+def user_not_found(error: UserNotFound):
+    return render_template(
+        'message.html',
+        title="Ошибка",
+        message="Пользователь {username} не найден.".format(
+            username=error.username
+        )
+    ), 404
 
 
 @profile_blueprint.context_processor

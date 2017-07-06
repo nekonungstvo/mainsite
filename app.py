@@ -8,6 +8,7 @@ from blueprints.character import character_blueprint
 from blueprints.custom_page import custom_pages_blueprint
 from blueprints.profile import profile_blueprint
 from database import User, News
+from model.authorization import AuthorizationException
 from model.forms import LoginForm
 
 app = Flask(
@@ -59,9 +60,18 @@ def index_page():
 def handle_errors(error):
     return render_template(
         "message.html",
-        title="Ошибка 404",
+        title="Ошибка",
         message="Такой страницы не существует. Как вы сюда попали?"
     ), 404
+
+
+@app.errorhandler(AuthorizationException)
+def hadle_auth_error(error: AuthorizationException):
+    return render_template(
+        "message.html",
+        title="Ошибка авторизации",
+        message=error.message
+    ), error.status_code
 
 
 if __name__ == '__main__':

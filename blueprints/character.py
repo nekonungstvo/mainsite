@@ -34,7 +34,7 @@ def create_edit_character_page(character: Union[None, Character], user: User) ->
     form = CharacterForm(request.form, character)
 
     if not can_edit_characters(current_user, user):
-        raise AuthorizationException("Can't create or edit this character")
+        raise AuthorizationException("У вас нет прав для редактирования этого персонажа.")
 
     if request.form:
         if request.form.get("submit") and form.validate():
@@ -88,6 +88,7 @@ def inject_auth_functions():
         can_edit_characters=can_edit_characters,
         can_see_characters=can_see_characters
     )
+
 
 @character_blueprint.errorhandler(CharacterNotFound)
 def user_not_found(error: CharacterNotFound):

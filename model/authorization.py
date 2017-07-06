@@ -4,6 +4,10 @@ from database import User
 class AuthorizationException(Exception):
     status_code = 403
 
+    def __init__(self, message):
+        super().__init__(message)
+        self.message = message
+
 
 class Role:
     ANONYMOUS = 0

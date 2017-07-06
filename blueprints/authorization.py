@@ -5,6 +5,7 @@ from flask_login import logout_user, login_user
 from pony.orm import db_session
 
 from model import user as user_model
+from model.authorization import AuthorizationException
 from model.forms import LoginForm, RegistrationForm
 from model.user import UserNotFound
 
@@ -66,9 +67,11 @@ def login_action():
 
     user = user_model.get_user(username)
 
-    if user.password_hash == hash_password(password):
-        login_user(user)
-        return redirect(url_for('index_page'))
+    if user.password_hash != hash_password(password):
+        raise AuthorizationException("Неверный пароль")
+
+    login_user(user)
+    return redirect(url_for('index_page'))
 
 
 @authorization_blueprint.route('/logout')
