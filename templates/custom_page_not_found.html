@@ -1,9 +1,9 @@
-{% extends "base.html" %}
+{% extends "message.html" %}
 
-{% block title %}Страница "{{ identifier }}" не найдена!{% endblock %}
+{% set title = "Страница \"" + identifier + "\" не найдена!" %}
+{% set message = "Возможно, она была удалена администратором, либо вы ввели неверный url." %}
 
-{% block content %}
-    <h3>Страница "{{ identifier }}" не найдена!</h3>
+{% block message %}
     <p>
         {% if can_edit_custom_page(current_user) %}
             Вы можете <a href="{{ url_for(
@@ -11,7 +11,7 @@
             identifier=identifier
             ) }}">создать</a> её.
         {% else %}
-            Возможно, она была удалена администратором, либо вы ввели неверный url.
+            {{ message }}
         {% endif %}
     </p>
 {% endblock %}
