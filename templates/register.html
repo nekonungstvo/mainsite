@@ -2,6 +2,8 @@
 
 {% block title %}Регистрация{% endblock %}
 
+{% from "macros.html" import list_errors %}
+
 {% block content %}
     <h2>Регистрация</h2>
     <div id="regr">
@@ -23,22 +25,16 @@
         <p>Если вы не согласны с каким-либо из этих условий, не продолжайте регистрацию и покиньте сайт.</p>
     </div>
 
-    {% set error_fields = form.errors.values() %}
-    {% if error_fields %}
-        <ul>
-            {% for errors in error_fields %}
-                {% for error in errors %}
-                    <li>{{ error }}</li>
-                {% endfor %}
-            {% endfor %}
-        </ul>
-    {% endif %}
+    {{ list_errors(form) }}
 
     <form method="POST" class="registration">
+        {{ form.csrf_token }}
         <ul>
             {% for field in form %}
                 <li>
-                    {{ field.label }}
+                    {% if field.type != "HiddenField" %}
+                        {{ field.label }}
+                    {% endif %}
                     {{ field }}
                 </li>
             {% endfor %}

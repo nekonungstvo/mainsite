@@ -30,8 +30,7 @@ def registration_page():
 
         return redirect(url_for('index_page'))
 
-    captcha = get_random_captcha()
-    form.captcha_answer.label.text = captcha
+    form.set_captcha(get_random_captcha())
 
     return render_template(
         'register.html',

@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% from "macros.html" import list_errors %}
+
+{% block title %}Изменение персонажа {{ form.login.data }}{% endblock %}
+
 {% block content %}
     <h2>Изменение персонажа {{ form.login.data }}</h2>
 
@@ -15,16 +19,7 @@
         </p>
     </div>
     <h3>И заполните поля</h3>
-    {% set error_fields = form.errors.values() %}
-    {% if error_fields %}
-        <ul>
-            {% for errors in error_fields %}
-                {% for error in errors %}
-                    <li>{{ error }}</li>
-                {% endfor %}
-            {% endfor %}
-        </ul>
-    {% endif %}
+    {{ list_errors(form) }}
     <form class="editprofile" method="POST">
         <table>
             {% for field in form %}

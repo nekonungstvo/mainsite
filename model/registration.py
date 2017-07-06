@@ -26,7 +26,8 @@ def get_random_captcha():
 
 
 def check_captcha(question, answer):
-    return CAPTCHA.get(question) == answer
+    captcha_answer = CAPTCHA.get(question, None)
+    return captcha_answer and (captcha_answer.lower() == answer.lower())
 
 
 def create_user(username: str, password: str):

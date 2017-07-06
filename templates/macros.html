@@ -13,3 +13,16 @@
         </div>
     </div>
 {%- endmacro %}
+
+{% macro list_errors(form) %}
+    {% set error_fields = form.errors.values() %}
+    {% if error_fields %}
+        <ul>
+            {% for errors in error_fields %}
+                {% for error in errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endmacro %}

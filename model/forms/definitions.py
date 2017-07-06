@@ -1,9 +1,10 @@
-from wtforms import Form, StringField, PasswordField, BooleanField
-from wtforms.validators import DataRequired, EqualTo
+from wtforms import Form, StringField, PasswordField, BooleanField, HiddenField
+from wtforms.validators import DataRequired, EqualTo, ValidationError
 from wtforms.widgets import TextArea
 
 from model.forms.fields import LoginField
 from model.forms.validators import UserUnique, CharacterUnique
+from model.registration import check_captcha
 
 
 class RegistrationForm(Form):
@@ -50,6 +51,20 @@ class RegistrationForm(Form):
             required=True
         )
     )
+
+    captcha_type = HiddenField()
+
+    def set_captcha(self, captcha):
+        self.captcha_answer.data = ""
+        self.captcha_answer.label.text = captcha
+        self.captcha_type.data = captcha
+
+    def validate_captcha_answer(self, field):
+        captcha_type = self.captcha_type.data
+        captcha_answer = self.captcha_answer.data.strip()
+        
+        if not check_captcha(captcha_type, captcha_answer):
+            raise ValidationError("Неправильный ответ на вопрос капчи.")
 
 
 class CharacterForm(Form):
