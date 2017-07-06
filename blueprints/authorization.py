@@ -90,3 +90,12 @@ def user_not_found(error: UserNotFound):
             username=error.username
         )
     ), 404
+
+
+@authorization_blueprint.app_errorhandler(AuthorizationException)
+def handle_auth_error(error: AuthorizationException):
+    return render_template(
+        "message.html",
+        title="Ошибка авторизации",
+        message=error.message
+    ), error.status_code
