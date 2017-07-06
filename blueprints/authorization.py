@@ -29,6 +29,7 @@ def registration_page():
     username = form.username.data
     password = form.password.data
 
+    # Unique validation moved to mode.forms.validators
     if request.method == 'POST' and form.validate():
         user_model.create_user(
             username=username,

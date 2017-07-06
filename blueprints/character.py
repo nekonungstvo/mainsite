@@ -36,7 +36,8 @@ def create_edit_character_page(character: Union[None, Character], user: User) ->
     if not can_edit_characters(current_user, user):
         raise AuthorizationException("У вас нет прав для редактирования этого персонажа.")
 
-    if request.form:
+    if request.method == 'POST':
+        # Unique validation moved to mode.forms.validators
         if request.form.get("submit") and form.validate():
             if not character:
                 character = character_model.create_character(form.login.data, user)
