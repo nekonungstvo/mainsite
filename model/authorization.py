@@ -1,3 +1,5 @@
+from random import choice
+
 from database import User
 
 
@@ -49,3 +51,30 @@ def has_permission(user: User, permission: str) -> bool:
     if not user.is_authenticated:
         return permission in roles_perm.get(Role.ANONYMOUS, [])
     return permission in roles_perm.get(user.role, [])
+
+
+CAPTCHA = {
+    "Антоним слова «хороший»": "плохой",
+    "Фамилия первого советского космонавта": "гагарин",
+    "Какое из слов лишнее: город, посёлок, село, ананас": "ананас",
+    "Какое из слов лишнее: лопата, клавиатура, кирка, мотыга": "клавиатура",
+    "Сколько месяцев в году? (ответ числом)": "12",
+    "Сколько дней в неделе? (ответ цифрой)": "7",
+    "Столица России": "москва",
+    "Столица Украины": "киев",
+    "Сколько минут в одном часе? (ответ числом)": "60",
+    "Сколько часов в сутках? (ответ числом)": "24",
+    "(Гоголь) В России две беды — дураки и ...": "дороги",
+    "Какая фамилия у поэта Александра Сергеевича?": "пушкин",
+    "Какое из слов лишнее: тигр, лев, сова, пантера": "сова",
+    "Просто напишите букву «Ц» семь раз подряд": "ццццццц",
+}
+
+
+def get_random_captcha():
+    question = choice(CAPTCHA.keys())
+    return question, CAPTCHA.get(question)
+
+
+def check_captcha(question, answer):
+    return CAPTCHA.get(question) == answer

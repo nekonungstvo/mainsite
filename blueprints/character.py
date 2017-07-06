@@ -9,7 +9,7 @@ from model import character as character_model
 from model import user as user_model
 from model.authorization import AuthorizationException
 from model.character import can_edit_characters, can_see_characters, CharacterNotFound
-from model.forms import CharacterForm
+from model.forms.definitions import CharacterForm
 
 character_blueprint = Blueprint(
     'character',
@@ -59,7 +59,7 @@ def create_edit_character_page(character: Union[None, Character], user: User) ->
     return render_template(
         'character_edit.html',
         form=form,
-        create=False if character else True
+        create=not character
     )
 
 
@@ -91,7 +91,7 @@ def inject_auth_functions():
 
 
 @character_blueprint.errorhandler(CharacterNotFound)
-def user_not_found(error: CharacterNotFound):
+def character_not_found(error: CharacterNotFound):
     return render_template(
         'message.html',
         title="Персонаж не найден",

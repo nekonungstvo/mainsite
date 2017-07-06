@@ -6,7 +6,7 @@ from pony.orm import db_session
 
 from model import user as user_model
 from model.authorization import AuthorizationException
-from model.forms import LoginForm, RegistrationForm
+from model.forms.definitions import LoginForm, RegistrationForm
 from model.user import UserNotFound
 
 authorization_blueprint = Blueprint(
@@ -25,14 +25,11 @@ def hash_password(password):
 @db_session
 def registration_page():
     form = RegistrationForm(request.form)
-    errors = []
 
     username = form.username.data
     password = form.password.data
 
-    unique = not user_model.check_user_exists(username)
-
-    if request.method == 'POST' and form.validate() and unique:
+    if request.method == 'POST' and form.validate():
         user_model.create_user(
             username=username,
             password_hash=hash_password(password)
@@ -40,20 +37,9 @@ def registration_page():
 
         return redirect(url_for('index_page'))
 
-    if not unique:
-        errors.append("Это имя пользователя уже занято.")
-
-    errors += [
-        message
-        for messages in form.errors.values()
-        for message in messages
-
-    ]
-
     return render_template(
         'register.html',
-        form=form,
-        errors=errors
+        form=form
     )
 
 

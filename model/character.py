@@ -8,13 +8,9 @@ class CharacterNotFound(Exception):
         self.login = login
 
 
-def get_character_get_generator(login):
-    return lambda character: character.login == login
-
-
 def get_character(login: str) -> Character:
     character = Character.select(
-        get_character_get_generator(login)
+        lambda character: character.login == login
     ).first()
 
     if not character:

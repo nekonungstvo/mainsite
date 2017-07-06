@@ -5,7 +5,7 @@ from pony.orm import db_session, desc
 from model import user as user_model
 from model.authorization import AuthorizationException
 from model.character import can_edit_characters, can_see_characters
-from model.forms import AboutForm
+from model.forms.definitions import AboutForm
 from model.user import can_edit_profile, UserNotFound
 
 profile_blueprint = Blueprint(

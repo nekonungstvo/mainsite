@@ -3,7 +3,7 @@ from pony.orm import db_session
 
 from model import custom_page as custom_page_model
 from model.custom_page import CustomPageNotFound, can_edit_custom_page
-from model.forms import CustomPageForm
+from model.forms.definitions import CustomPageForm
 
 custom_pages_blueprint = Blueprint(
     'custom_pages',

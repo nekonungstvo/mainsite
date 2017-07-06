@@ -8,25 +8,15 @@ class UserNotFound(Exception):
         self.username = username
 
 
-def get_user_get_generator(username):
-    return lambda db_user: db_user.username == username
-
-
 def get_user(username: str) -> User:
     user = User.select(
-        get_user_get_generator(username)
+        lambda db_user: db_user.username == username
     ).first()
 
     if not user:
         raise UserNotFound(username=username)
 
     return user
-
-
-def check_user_exists(username: str) -> bool:
-    return User.exists(
-        get_user_get_generator(username)
-    )
 
 
 def create_user(username: str, password_hash: str):

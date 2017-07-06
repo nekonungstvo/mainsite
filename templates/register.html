@@ -21,10 +21,13 @@
         <p>Если вы не согласны с каким-либо из этих условий, не продолжайте регистрацию и покиньте сайт.</p>
     </div>
 
-    {% if errors %}
+    {% set error_fields = form.errors.values() %}
+    {% if error_fields %}
         <ul>
-            {% for message in errors %}
-                <li>{{ message }}</li>
+            {% for errors in error_fields %}
+                {% for error in errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
             {% endfor %}
         </ul>
     {% endif %}

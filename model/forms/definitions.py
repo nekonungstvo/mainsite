@@ -1,19 +1,25 @@
-from wtforms import Form, StringField, PasswordField, validators, BooleanField
+from wtforms import Form, StringField, PasswordField, BooleanField
+from wtforms.validators import DataRequired, EqualTo
 from wtforms.widgets import TextArea
 
-from model.form_fields import LoginField
+from model.forms.fields import LoginField
+from model.forms.validators import UserUnique, CharacterUnique
 
 
 class RegistrationForm(Form):
     """
     Form for registration
     """
-    username = LoginField(label='Логин:')
+    username = LoginField(
+        label='Логин:',
+        validators=[UserUnique('Имя пользователя уже занято')]
+    )
+
     password = PasswordField(
         label='Пароль:',
         validators=[
-            validators.DataRequired(),
-            validators.EqualTo('password_confirm', message='Пароли должны совпадать.')
+            DataRequired(),
+            EqualTo('password_confirm', message='Пароли должны совпадать.')
         ],
         render_kw=dict(
             size=10,
@@ -26,7 +32,7 @@ class RegistrationForm(Form):
     password_confirm = PasswordField(
         label='Пароль (ещё раз):',
         validators=[
-            validators.DataRequired('Нет ответа на вопрос капчи.')
+            DataRequired('Нет ответа на вопрос капчи.')
         ],
         render_kw=dict(
             size=10,
@@ -50,7 +56,11 @@ class CharacterForm(Form):
     """
     Form for character edit and creation
     """
-    login = LoginField(label='Логин персонажа:')
+    login = LoginField(
+        label='Логин персонажа:',
+        validators=[CharacterUnique("Такой логин уже занят")]
+    )
+
     name = StringField(label='Имя персонажа:')
 
     appearance = StringField(

@@ -8,7 +8,7 @@ from blueprints.character import character_blueprint
 from blueprints.custom_page import custom_pages_blueprint
 from blueprints.profile import profile_blueprint
 from database import User, News
-from model.forms import LoginForm
+from model.forms.definitions import LoginForm
 
 app = Flask(
     __name__,
