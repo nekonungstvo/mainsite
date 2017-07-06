@@ -3,6 +3,7 @@ from pony.orm import db_session
 
 from model import registration
 from model.forms.definitions import RegistrationForm
+from model.registration import get_random_captcha
 
 registration_blueprint = Blueprint(
     'registration',
@@ -14,7 +15,7 @@ registration_blueprint = Blueprint(
 
 @registration_blueprint.route('/', methods=["GET", "POST"])
 @db_session
-def registration_page(user_model=None):
+def registration_page():
     form = RegistrationForm(request.form)
 
     username = form.username.data
@@ -28,6 +29,9 @@ def registration_page(user_model=None):
         )
 
         return redirect(url_for('index_page'))
+
+    captcha = get_random_captcha()
+    form.captcha_answer.label.text = captcha
 
     return render_template(
         'register.html',

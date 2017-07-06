@@ -22,8 +22,7 @@ CAPTCHA = {
 
 
 def get_random_captcha():
-    question = choice(CAPTCHA.keys())
-    return question, CAPTCHA.get(question)
+    return choice(list(CAPTCHA.keys()))
 
 
 def check_captcha(question, answer):
