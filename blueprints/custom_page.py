@@ -33,6 +33,8 @@ def custom_page_edit(identifier):
         cpage = None
 
     form = CustomPageForm(request.form, cpage)
+    if not cpage:
+        form.identifier.data = identifier
 
     if request.form:
         if ("submit" in request.form) and form.validate():

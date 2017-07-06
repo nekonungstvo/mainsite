@@ -18,7 +18,7 @@ class RegistrationForm(Form):
     password = PasswordField(
         label='Пароль:',
         validators=[
-            DataRequired(),
+            DataRequired("Вы не указали пароль"),
             EqualTo('password_confirm', message='Пароли должны совпадать.')
         ],
         render_kw=dict(
@@ -117,7 +117,7 @@ class CustomPageForm(Form):
     """
     identifier = StringField(
         label="Идентификатор",
-        validators=[DataRequired()]
+        validators=[DataRequired("Укажите идентификатор страницы")]
     )
     title = StringField(label="Заголовок страницы:")
     content = StringField(
