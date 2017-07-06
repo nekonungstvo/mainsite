@@ -74,7 +74,7 @@ def character_create_page(username):
 
 @character_blueprint.route('/<login>/edit', methods=["GET", "POST"])
 @db_session
-def character_edit_page(login=None, action="edit", username=None):
+def character_edit_page(login):
     character = character_model.get_character(login)
     return create_edit_character_page(
         character=character,
