@@ -24,7 +24,6 @@ def get_character(login: str) -> Character:
 
 
 def create_character(login, user: User):
-    print(user.username)
     return Character(
         login=login,
         user=user,
