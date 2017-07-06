@@ -28,7 +28,7 @@ def registration_page():
             username=username,
             password=password
         )
-        print("asdas")
+
         clear_captcha_session()
         return redirect(url_for('index_page'))
 

@@ -2,7 +2,10 @@
 
 {% block title %}Редактиврование страницы ({{ custom_page.indetifier }}){% endblock %}
 
+{% from "macros.html" import list_errors %}
+
 {% block content %}
+    {{ list_errors(form) }}
     <form class="editprofile" method="POST">
         {% for field in form %}
             <p>

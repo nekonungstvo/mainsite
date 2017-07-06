@@ -56,6 +56,7 @@ class RegistrationForm(Form):
         self.captcha_answer.data = ""
         self.captcha_answer.label.text = captcha
 
+
 class CharacterForm(Form):
     """
     Form for character edit and creation
@@ -114,7 +115,10 @@ class CustomPageForm(Form):
     """
     Form for custom page edit
     """
-    identifier = StringField(label="Идентификатор")
+    identifier = StringField(
+        label="Идентификатор",
+        validators=[DataRequired()]
+    )
     title = StringField(label="Заголовок страницы:")
     content = StringField(
         label='Содержимое страницы (markdown):',
