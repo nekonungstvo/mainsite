@@ -8,7 +8,7 @@ from database import Character, User
 from model import character as character_model
 from model import user as user_model
 from model.authorization import AuthorizationException
-from model.character import can_edit_characters, can_see_characters
+from model.character import can_edit_characters, can_see_characters, CharacterNotFound
 from model.forms import CharacterForm
 
 character_blueprint = Blueprint(
@@ -25,7 +25,7 @@ def character_page(login):
     character = character_model.get_character(login)
 
     return render_template(
-        'character.jinja2',
+        'character.html',
         character=character
     )
 
@@ -57,7 +57,7 @@ def create_edit_character_page(character: Union[None, Character], user: User) ->
             ))
 
     return render_template(
-        'character_edit.jinja2',
+        'character_edit.html',
         form=form,
         create=False if character else True
     )
@@ -88,3 +88,13 @@ def inject_auth_functions():
         can_edit_characters=can_edit_characters,
         can_see_characters=can_see_characters
     )
+
+@character_blueprint.errorhandler(CharacterNotFound)
+def user_not_found(error: CharacterNotFound):
+    return render_template(
+        'message.html',
+        title="Персонаж не найден",
+        message="Персонаж с ником \"{login}\" не найден.".format(
+            login=error.login
+        )
+    ), 404

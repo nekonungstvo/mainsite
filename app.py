@@ -10,7 +10,10 @@ from blueprints.profile import profile_blueprint
 from database import User, News
 from model.forms import LoginForm
 
-app = Flask(__name__)
+app = Flask(
+    __name__,
+
+)
 app.secret_key = 'super secret string'
 app.login_manager = LoginManager()
 app.login_manager.init_app(app)
@@ -47,9 +50,19 @@ def index_page():
     ).first()
 
     return render_template(
-        'index.jinja2',
+        'index.html',
         last_news=last_news
     )
 
+
+@app.errorhandler(404)
+def handle_errors(error):
+    return render_template(
+        "message.html",
+        title="Ошибка 404",
+        message="Такой страницы не существует. Как вы сюда попали?"
+    ), 404
+
+
 if __name__ == '__main__':
-    app.run()
+    app.run(threaded=True)

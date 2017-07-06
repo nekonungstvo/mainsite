@@ -6,6 +6,7 @@ from pony.orm import db_session
 
 from model import user as user_model
 from model.forms import LoginForm, RegistrationForm
+from model.user import UserNotFound
 
 authorization_blueprint = Blueprint(
     'authorization',
@@ -49,7 +50,7 @@ def registration_page():
     ]
 
     return render_template(
-        'register.jinja2',
+        'register.html',
         form=form,
         errors=errors
     )
@@ -75,3 +76,14 @@ def login_action():
 def logout_action():
     logout_user()
     return redirect(url_for('index_page'))
+
+
+@authorization_blueprint.errorhandler(UserNotFound)
+def user_not_found(error: UserNotFound):
+    return render_template(
+        'message.html',
+        title="Ошибка авторизации",
+        message="Пользователь {username} не найден.".format(
+            username=error.username
+        )
+    ), 404

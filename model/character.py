@@ -2,6 +2,12 @@ from database import Character, User
 from model.authorization import has_permission
 
 
+class CharacterNotFound(Exception):
+    def __init__(self, login):
+        super().__init__("{login} не найден".format(login=login))
+        self.login = login
+
+
 def get_character_get_generator(login):
     return lambda character: character.login == login
 
@@ -12,12 +18,13 @@ def get_character(login: str) -> Character:
     ).first()
 
     if not character:
-        raise Exception("CHARACTER NOT FOUND")
+        raise CharacterNotFound(login)
 
     return character
 
 
 def create_character(login, user: User):
+    print(user.username)
     return Character(
         login=login,
         user=user,

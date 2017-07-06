@@ -21,7 +21,7 @@ profile_blueprint = Blueprint(
 def profile_page(username):
     user = user_model.get_user(username)
     return render_template(
-        'profile.jinja2',
+        'profile.html',
         user=user,
         characters=user.characters.order_by(
             lambda ch: (desc(ch.status), desc(ch.id))
@@ -48,7 +48,7 @@ def profile_edit_page(username):
         )
 
     return render_template(
-        'profile_edit.jinja2',
+        'profile_edit.html',
         user=user,
         form=form
     )

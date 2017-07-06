@@ -19,7 +19,7 @@ def custom_page(identifier):
     cpage = custom_page_model.get_custom_page(identifier)
 
     return render_template(
-        'custom_page.jinja2',
+        'custom_page.html',
         custom_page=cpage
     )
 
@@ -56,7 +56,7 @@ def custom_page_edit(identifier):
             )
 
     return render_template(
-        'custom_page_edit.jinja2',
+        'custom_page_edit.html',
         custom_page=cpage,
         form=form
     )
@@ -65,9 +65,9 @@ def custom_page_edit(identifier):
 @custom_pages_blueprint.errorhandler(CustomPageNotFound)
 def handle_no_custom_page(error: CustomPageNotFound):
     return render_template(
-        'custom_page_not_found.jinja2',
+        'custom_page_not_found.html',
         identifier=error.identifier
-    )
+    ), 404
 
 
 @custom_pages_blueprint.context_processor

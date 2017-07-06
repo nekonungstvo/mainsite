@@ -2,6 +2,12 @@ from database import User
 from model.authorization import Role, has_permission
 
 
+class UserNotFound(Exception):
+    def __init__(self, username):
+        super().__init__("{username} не найден".format(username=username))
+        self.username = username
+
+
 def get_user_get_generator(username):
     return lambda db_user: db_user.username == username
 
@@ -12,7 +18,7 @@ def get_user(username: str) -> User:
     ).first()
 
     if not user:
-        raise Exception("USER NOT FOUND")
+        raise UserNotFound(username=username)
 
     return user
 

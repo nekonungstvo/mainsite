@@ -38,12 +38,7 @@ class Character(db.Entity):
     story = Optional(str)
 
     user = Required(lambda: User)
-    status = Required(lambda: CharacterStatus)
-
-
-class CharacterStatus(db.Entity):
-    identifier = Optional(str, unique=True)
-    characters = Set(lambda: Character)
+    status = Required(int)
 
 
 class CustomPage(db.Entity):

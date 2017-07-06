@@ -1,8 +1,10 @@
-{% extends "base.jinja2" %}
+{% extends "base.html" %}
+
+{% block title %}Страница персонажа "{{ character.login }}"{% endblock %}
 
 {% block content %}
     <h3>
-        Профиль {{ character.login }}
+        Персонаж "{{ character.login }}"
         {% if can_edit_characters(current_user, character.user) %}
             <sup>
                 <a href="{{ url_for('character.character_edit_page', login=character.login) }}">
