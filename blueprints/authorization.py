@@ -4,7 +4,7 @@ from pony.orm import db_session
 
 from model import user as user_model
 from model.authorization import AuthorizationException, check_password
-from model.forms.definitions import LoginForm, RegistrationForm
+from model.forms.definitions import LoginForm
 from model.user import UserNotFound
 
 authorization_blueprint = Blueprint(
@@ -13,29 +13,6 @@ authorization_blueprint = Blueprint(
     template_folder='templates',
     url_prefix="/auth"
 )
-
-
-@authorization_blueprint.route('/register', methods=["GET", "POST"])
-@db_session
-def registration_page():
-    form = RegistrationForm(request.form)
-
-    username = form.username.data
-    password = form.password.data
-
-    # Unique validation moved to mode.forms.validators
-    if request.method == 'POST' and form.validate():
-        user_model.create_user(
-            username=username,
-            password=password
-        )
-
-        return redirect(url_for('index_page'))
-
-    return render_template(
-        'register.html',
-        form=form
-    )
 
 
 @authorization_blueprint.route('/login', methods=["POST"])

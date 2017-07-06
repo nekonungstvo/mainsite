@@ -7,6 +7,7 @@ from blueprints.authorization import authorization_blueprint
 from blueprints.character import character_blueprint
 from blueprints.custom_page import custom_pages_blueprint
 from blueprints.profile import profile_blueprint
+from blueprints.registration import registration_blueprint
 from database import User, News
 from model.forms.definitions import LoginForm
 
@@ -21,6 +22,7 @@ app.markdown = Markdown(
     app
 )
 
+app.register_blueprint(registration_blueprint)
 app.register_blueprint(profile_blueprint)
 app.register_blueprint(character_blueprint)
 app.register_blueprint(custom_pages_blueprint)

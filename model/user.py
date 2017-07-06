@@ -1,5 +1,5 @@
 from database import User
-from model.authorization import Role, has_permission, hash_password
+from model.authorization import has_permission
 
 
 class UserNotFound(Exception):
@@ -17,15 +17,6 @@ def get_user(username: str) -> User:
         raise UserNotFound(username=username)
 
     return user
-
-
-def create_user(username: str, password: str):
-    return User(
-        username=username,
-        password_hash=hash_password(password),
-        about_text="",
-        role=Role.USER
-    )
 
 
 def can_edit_profile(user, owener):
