@@ -65,4 +65,4 @@ def handle_errors(error):
 
 
 if __name__ == '__main__':
-    app.run(threaded=True)
+    app.run(debug=True, threaded=True)
