@@ -15,6 +15,16 @@
         </p>
     </div>
     <h3>И заполните поля</h3>
+    {% set error_fields = form.errors.values() %}
+    {% if error_fields %}
+        <ul>
+            {% for errors in error_fields %}
+                {% for error in errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    {% endif %}
     <form class="editprofile" method="POST">
         <table>
             {% for field in form %}
