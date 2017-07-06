@@ -1,6 +1,7 @@
 from flask import Blueprint, request, url_for, redirect, render_template
 from pony.orm import db_session
 
+from blueprints.session import clear_captcha_session, set_captcha_session
 from model import registration
 from model.forms.definitions import RegistrationForm
 from model.registration import get_random_captcha
@@ -27,10 +28,13 @@ def registration_page():
             username=username,
             password=password
         )
-
+        print("asdas")
+        clear_captcha_session()
         return redirect(url_for('index_page'))
 
-    form.set_captcha(get_random_captcha())
+    captcha = get_random_captcha()
+    form.set_captcha(captcha)
+    set_captcha_session(captcha)
 
     return render_template(
         'register.html',
