@@ -8,7 +8,7 @@
                 [+] {{ title }}
             </span>
             <blockquote>
-                {{ content }}
+                {{ content | escape | markdown }}
             </blockquote>
         </div>
     </div>
