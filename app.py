@@ -64,6 +64,7 @@ def index_page():
         last_news=last_news
     )
 
+
 @app.errorhandler(404)
 def handle_errors(error):
     """
