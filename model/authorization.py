@@ -24,7 +24,7 @@ def hash_password(password: str) -> str:
     return hashlib.sha512(password.encode()).hexdigest()
 
 
-def check_password(user: User, password):
+def check_password(user: User, password) -> str:
     """
     Checks if specified password matches this user.
     :param user: User's ORM object.
