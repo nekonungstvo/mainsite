@@ -37,6 +37,9 @@ def inject_login_form():
 @app.login_manager.user_loader
 @db_session
 def load_user(user_id):
+    """
+    Used to fetch user by its id.
+    """
     return User.select(
         lambda user: user.id == user_id
     ).first()
@@ -45,6 +48,10 @@ def load_user(user_id):
 @app.route('/')
 @db_session
 def index_page():
+    """
+    Main page with news and comunity info.
+    """
+
     last_news = News.select().order_by(
         lambda news: desc(news.timestamp)
     ).first()
@@ -57,6 +64,9 @@ def index_page():
 
 @app.errorhandler(404)
 def handle_errors(error):
+    """
+    Error handler to setup 404 error page.
+    """
     return render_template(
         "message.html",
         title="Ошибка",
