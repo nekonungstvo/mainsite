@@ -29,6 +29,9 @@ app.register_blueprint(character_blueprint)
 
 @app.context_processor
 def inject_login_form():
+    """
+    Inject login_form as it exists on every page.
+    """
     return dict(
         login_form=LoginForm(),
     )
@@ -38,7 +41,7 @@ def inject_login_form():
 @db_session
 def load_user(user_id):
     """
-    Used to fetch user by its id.
+    Used by login_manager to fetch user by stored id.
     """
     return User.select(
         lambda user: user.id == user_id
@@ -60,7 +63,6 @@ def index_page():
         'index.html',
         last_news=last_news
     )
-
 
 @app.errorhandler(404)
 def handle_errors(error):
