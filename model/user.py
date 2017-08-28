@@ -1,4 +1,7 @@
-from database import User
+"""
+Module that contains function for fetching and saving user info.
+"""
+from model.database import User
 from model.authorization import has_permission
 
 

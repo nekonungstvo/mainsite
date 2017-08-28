@@ -1,8 +1,8 @@
 """
-Responsible for handling character page processes.
+Module that contains function for fetching and saving user info.
 """
 
-from database import Character, User
+from model.database import Character, User
 from model.authorization import has_permission
 
 

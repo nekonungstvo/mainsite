@@ -1,6 +1,10 @@
+"""
+Module that contains authorization related functions. Such as hashing password and permission check.
+"""
+
 import hashlib
 
-from database import User
+from model.database import User
 
 
 class AuthorizationException(Exception):

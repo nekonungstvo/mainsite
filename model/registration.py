@@ -1,6 +1,6 @@
 from random import choice
 
-from database import User
+from model.database import User
 from model.authorization import hash_password, Role
 
 CAPTCHA = {

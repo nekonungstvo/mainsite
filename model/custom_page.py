@@ -1,4 +1,4 @@
-from database import CustomPage, User
+from model.database import CustomPage, User
 from model.authorization import has_permission
 
 

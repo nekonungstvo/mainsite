@@ -4,7 +4,7 @@ from flask import Blueprint, render_template, request, redirect, url_for
 from flask_login import current_user
 from pony.orm import db_session
 
-from database import Character, User
+from model.database import Character, User
 from model import character as character_model
 from model import user as user_model
 from model.authorization import AuthorizationException
