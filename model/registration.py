@@ -1,3 +1,7 @@
+"""
+Module containing registration functions.
+"""
+
 from random import choice
 
 from model.database import User
@@ -21,16 +25,35 @@ CAPTCHA = {
 }
 
 
-def get_random_captcha():
+def get_random_captcha() -> str:
+    """
+    Returns random captcha question.
+    """
     return choice(list(CAPTCHA.keys()))
 
 
-def check_captcha(question, answer):
+def check_captcha(question: str, answer: str) -> bool:
+    """
+    Checks if captcha answer is correct.
+    :param question: Question text.
+    :param answer: User's input.
+    :return: True if answer is correct and False if not.
+    """
     captcha_answer = CAPTCHA.get(question, None)
-    return captcha_answer and (captcha_answer.lower() == answer.lower())
+    return (
+        captcha_answer is not None
+    ) and (
+        captcha_answer.lower() == answer.lower()
+    )
 
 
-def create_user(username: str, password: str):
+def create_user(username: str, password: str) -> User:
+    """
+    Creates user database record.
+    :param username: New user's name.
+    :param password: New user's password.
+    :return: New user's orm object.
+    """
     return User(
         username=username,
         password_hash=hash_password(password),
